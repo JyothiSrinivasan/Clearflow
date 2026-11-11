@@ -90,3 +90,45 @@ def delete_transaction(transaction_id):
             "DELETE FROM transactions WHERE id = ?",
             (transaction_id,)
         )
+
+def init_paypal_database():
+    with connect() as conn:
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS paypal_payments (
+                order_id TEXT PRIMARY KEY,
+                capture_id TEXT,
+                status TEXT NOT NULL,
+                amount TEXT NOT NULL,
+                currency TEXT NOT NULL,
+                updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+
+
+def save_paypal_payment(payment):
+    """Upsert one verified PayPal order; never add USD to the INR ledger."""
+    init_paypal_database()
+    with connect() as conn:
+        conn.execute("""
+            INSERT INTO paypal_payments
+                (order_id, capture_id, status, amount, currency, updated_at)
+            VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+            ON CONFLICT(order_id) DO UPDATE SET
+                capture_id=excluded.capture_id,
+                status=excluded.status,
+                amount=excluded.amount,
+                currency=excluded.currency,
+                updated_at=CURRENT_TIMESTAMP
+        """, (payment['order_id'], payment.get('capture_id'),
+              payment['status'], payment['amount'], payment['currency']))
+
+
+def get_paypal_payments():
+    init_paypal_database()
+    with connect() as conn:
+        conn.row_factory = sqlite3.Row
+        rows = conn.execute("""
+            SELECT order_id, capture_id, status, amount, currency, updated_at
+            FROM paypal_payments ORDER BY updated_at DESC, order_id DESC
+        """).fetchall()
+    return [dict(row) for row in rows]

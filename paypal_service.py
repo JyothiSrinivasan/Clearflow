@@ -93,3 +93,25 @@ def capture_order(order_id):
     )
     response.raise_for_status()
     return response.json()
+
+
+def normalize_paypal_order(order):
+    """Extract verified order/capture details from an Orders v2 API response."""
+    units = order.get('purchase_units') or []
+    if not units:
+        raise ValueError('PayPal order has no purchase units.')
+    unit = units[0]
+    captures = (unit.get('payments') or {}).get('captures') or []
+    capture = captures[0] if captures else None
+    amount = (capture or {}).get('amount') or unit.get('amount') or {}
+    order_id = order.get('id')
+    currency, value = amount.get('currency_code'), amount.get('value')
+    if not order_id or not currency or value is None:
+        raise ValueError('PayPal order is missing ID or amount.')
+    return {
+        'order_id': order_id,
+        'capture_id': capture.get('id') if capture else None,
+        'status': (capture.get('status') if capture else order.get('status', 'UNKNOWN')),
+        'amount': str(value),
+        'currency': currency,
+    }
