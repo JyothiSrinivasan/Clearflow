@@ -11,7 +11,7 @@ from paypal_service import create_order, get_order, capture_order, normalize_pay
 from ai_service import ask_clearflow
 from forecast_service import generate_forecast
 
-st.set_page_config(page_title='Clearflow 2.0 | Payment Intelligence', page_icon='◈', layout='wide')
+st.set_page_config(page_title='Clearflow | Payment Intelligence', page_icon='◈', layout='wide')
 init_database()
 init_paypal_database()
 transactions = get_transactions()
@@ -120,7 +120,7 @@ h1,h2,h3,h4,p,span,label {color:#44352D}
 .section-note {color:#856F63;font-size:14px}
 </style>''', unsafe_allow_html=True)
 
-st.markdown('''<div class="hero"><h1>◈ Clearflow 2.0</h1>
+st.markdown('''<div class="hero"><h1>◈ Clearflow</h1>
 <p>Your cash flow, clearly in view. · AI-powered PayPal payment intelligence</p></div>''',
 unsafe_allow_html=True)
 st.info('Demo only: INR ledger data is synthetic. PayPal payments use USD sandbox test funds. Currencies are never silently combined.')
@@ -501,4 +501,4 @@ elif page == 'Transactions':
                 st.error(str(exc))
 
 st.divider()
-st.caption('Clearflow 2.0 · PayPal AI Hackathon 2026 · Sandbox demonstration')
+st.caption('Clearflow · PayPal AI Hackathon 2026 · Sandbox demonstration')
