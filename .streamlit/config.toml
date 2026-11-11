@@ -2,3 +2,11 @@
 [server]
 port = 8400
 address = "127.0.0.1"
+
+[theme]
+base = "dark"
+primaryColor = "#4ADEAE"
+backgroundColor = "#0B1424"
+secondaryBackgroundColor = "#17263A"
+textColor = "#E8F0FA"
+font = "sans serif"
