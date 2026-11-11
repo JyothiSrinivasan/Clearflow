@@ -131,13 +131,21 @@ Make sure Ollama is running before using the AI Copilot.
 
 ### 6. Run Clearflow
 
-```bash
-streamlit run app.py
+Make sure your Python virtual environment is activated, dependencies are installed, and Ollama is running with the `qwen2.5:3b` model available.
+
+Start the application:
+
+```powershell
+python -m streamlit run app.py
 ```
 
-Open the local application at:
+Clearflow will be available at:
 
-`http://127.0.0.1:8400`
+**http://127.0.0.1:8400**
+
+The port and local address are configured in `.streamlit/config.toml`.
+
+**Note:** To test PayPal payments, configure your own PayPal Sandbox credentials in `.env` using `.env.example` as a template.
 
 ## Demonstration Workflow
 
