@@ -1,41 +1,40 @@
-# 🌊 Clearflow
-### Your cash flow, clearly in view.
+# Clearflow 2.0
 
-**AI-Powered Financial Intelligence for Small Businesses**
+**Your cash flow, clearly in view.**
 
-Built for the **PayPal AI Hackathon 2026**.
+### AI-Powered PayPal Payment Intelligence & Cash-Flow Forecasting
 
-## Overview
+Clearflow 2.0 is a FinTech prototype developed for the **PayPal AI Hackathon 2026**. It combines PayPal Sandbox payment processing, verified payment synchronization, local AI-powered financial analysis, and interactive cash-flow forecasting in a unified dashboard.
 
-Clearflow is a Python-based FinTech prototype that combines PayPal Sandbox payment processing, AI-powered financial explanations, persistent transaction tracking, and cash-flow forecasting in one Streamlit application.
-
-The project demonstrates how small businesses can use payment APIs and locally running generative AI to better understand their financial activity.
+The application features a Terracotta & Cream interface designed for clear, accessible financial insights.
 
 ## Key Features
 
 ### 1. Financial Dashboard
-- Track business income and expenses.
-- Add transactions through an interactive form.
-- View total income, expenses, and net cash flow.
-- Store transactions persistently using SQLite.
+- Track synthetic INR income, expenses, and net cash flow.
+- Add and review transactions.
+- Store financial records in SQLite.
 
 ### 2. PayPal Sandbox Integration
-- Create PayPal Sandbox payment orders.
-- Open PayPal's buyer approval flow.
-- Check payment status.
-- Capture approved test payments.
-- Authenticate securely using OAuth 2.0.
+- Create PayPal Sandbox checkout orders.
+- Approve and capture test payments.
+- Retrieve existing orders through PayPal APIs.
+- Store verified payment information in SQLite.
+- Track payment status, order ID, capture ID, amount, and currency.
 
 ### 3. AI Financial Copilot
-- Ask natural-language questions about business finances.
-- Receive explanations grounded in calculated financial totals.
-- Run the Qwen2.5:3b language model locally through Ollama.
-- Avoid paid cloud-based LLM APIs.
+- Uses a locally running Ollama language model (`qwen2.5:3b`).
+- Analyzes synthetic financial data alongside synchronized PayPal Sandbox records.
+- Answers questions about completed payments, captured amounts, expenses, and cash flow.
+- Keeps USD Sandbox payments separate from INR ledger totals.
 
 ### 4. Cash-Flow Forecasting
-- Generate 7-, 14-, or 30-day baseline cash-flow projections.
-- Configure an assumed opening balance.
-- Review estimated daily cash balances.
+- INR baseline projections using synthetic financial transactions.
+- Separate USD scenario forecasts using user-defined assumptions.
+- Adjustable opening balances, forecast periods, expected receipts, and expenses.
+- Interactive Plotly visualizations.
+
+**Forecasts are illustrative estimates, not guaranteed financial predictions.**
 
 ## Technology Stack
 
@@ -43,135 +42,125 @@ The project demonstrates how small businesses can use payment APIs and locally r
 |---|---|
 | Frontend | Streamlit |
 | Programming language | Python |
-| Payment integration | PayPal REST API and Sandbox |
-| AI | Ollama + Qwen2.5:3b |
+| Payment integration | PayPal Sandbox REST APIs |
 | Database | SQLite |
-| Forecasting | Python |
-| API communication | Requests |
-| Configuration | python-dotenv |
+| AI model | Ollama — Qwen2.5 3B |
+| Charts | Plotly |
+| Configuration | Python-dotenv |
+| Version control | Git & GitHub |
+
+## Architecture
+
+```text
+                 Clearflow 2.0
+                       |
+          Streamlit User Interface
+                       |
+       +---------------+---------------+
+       |               |               |
+   INR Ledger      PayPal API      AI Copilot
+       |               |               |
+       |          Verified Orders      |
+       |               |               |
+       +------------ SQLite -----------+
+                       |
+                Financial Context
+                       |
+                 Local Ollama
+                       |
+                AI Explanations
+
+   Separate INR and USD Forecast Modules
+                       |
+                Plotly Charts
+```
 
 ## Getting Started
 
 ### Prerequisites
 
-- Python 3.13
+- Python 3.13 or a compatible Python version
 - Git
-- PayPal Developer Sandbox account
 - Ollama installed locally
+- PayPal Developer Sandbox credentials
 
-### Installation
-
-Clone the repository:
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/JyothiSrinivasan/Clearflow.git
 cd Clearflow
 ```
 
-Create a virtual environment:
+### 2. Create a virtual environment
 
 ```bash
 python -m venv .venv
 ```
 
-Activate it on Windows:
+Activate it on Windows PowerShell:
 
 ```powershell
 .\.venv\Scripts\Activate.ps1
 ```
 
-Install dependencies:
+### 3. Install dependencies
 
 ```bash
 python -m pip install -r requirements.txt
 ```
 
-### Configure PayPal Sandbox
+### 4. Configure PayPal Sandbox
 
-Copy `.env.example` to a new file named `.env`.
+Copy `.env.example` to `.env` and provide your own PayPal Sandbox API credentials.
 
-Add your own PayPal Sandbox credentials:
-
-```dotenv
+```env
 PAYPAL_CLIENT_ID=your_sandbox_client_id
 PAYPAL_CLIENT_SECRET=your_sandbox_client_secret
 PAYPAL_BASE_URL=https://api-m.sandbox.paypal.com
 ```
 
-Never commit `.env` or share your PayPal Client Secret.
+Never commit `.env` or actual credentials.
 
-### Configure Local AI
-
-Install Ollama from https://ollama.com.
-
-Download the model:
+### 5. Start Ollama
 
 ```bash
 ollama pull qwen2.5:3b
 ```
 
-Ensure Ollama is running before using the AI Copilot.
+Make sure Ollama is running before using the AI Copilot.
 
-### Run Clearflow
+### 6. Run Clearflow
 
 ```bash
-python -m streamlit run app.py --server.port 8400
+streamlit run app.py
 ```
 
-Open http://127.0.0.1:8400.
+Open the local application at:
 
-## How to Test
+`http://127.0.0.1:8400`
 
-**Financial Dashboard:** Add an income or expense transaction and verify that the financial totals update.
+## Demonstration Workflow
 
-**PayPal Payments:** Create a sandbox payment order, approve it using a PayPal Sandbox personal buyer account, check its status, and capture the approved payment.
-
-**AI Copilot:** Ask, "What are my total expenses and net cash flow?"
-
-**Forecasting:** Select a forecast horizon and review the projected balances.
-
-## Architecture
-
-```text
-User
- |
- v
-Streamlit Application
- |
- +-- SQLite Database
- |    +-- Transaction storage
- |    +-- Financial calculations
- |
- +-- PayPal Service
- |    +-- OAuth authentication
- |    +-- Sandbox Orders API
- |    +-- Payment capture
- |
- +-- AI Service
- |    +-- Ollama
- |    +-- Qwen2.5:3b
- |
- +-- Forecast Service
-      +-- Baseline cash-flow projections
-```
+1. Open the financial dashboard.
+2. Review or add synthetic INR transactions.
+3. Create and capture a PayPal Sandbox payment.
+4. Synchronize the verified PayPal order.
+5. Ask the AI Copilot to explain the payment activity.
+6. Explore the INR and USD cash-flow forecast charts.
 
 ## Important Limitations
 
-- This is a hackathon prototype, not a production financial service.
-- Dashboard transactions are synthetic and denominated in INR.
-- PayPal transactions use USD Sandbox test funds.
-- PayPal payments are not automatically reconciled with the SQLite transaction ledger.
-- Forecasts are baseline estimates, not validated machine-learning predictions.
-- Ollama must be running locally for AI responses.
-- Financial explanations are informational and should not be treated as professional financial advice.
+- PayPal transactions use Sandbox test funds only.
+- INR ledger records are synthetic demonstration data.
+- PayPal synchronization retrieves known orders; it does not import complete account transaction history.
+- USD Sandbox payments are not automatically converted or reconciled into INR totals.
+- USD forecasts use manually entered assumptions, not a trained payment prediction model.
+- The AI Copilot provides informational explanations, not regulated financial advice.
+- Local PayPal credentials and Ollama setup are required to reproduce the complete workflow.
 
-## Demo Video
+## Hackathon Demo
 
-Public YouTube demonstration: **Coming soon**
-
-## License
-
-This project will be released under the MIT License.
+**Demo video:** Add the public YouTube link here after recording.
 
 ## Author
 
@@ -179,4 +168,6 @@ This project will be released under the MIT License.
 
 GitHub: https://github.com/JyothiSrinivasan
 
-Developed for the PayPal AI Hackathon 2026.
+## License
+
+MIT License — see [LICENSE](LICENSE).
