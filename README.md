@@ -400,20 +400,24 @@ These tests validate API behavior and payment-data consistency. They do not cons
 - Clearflow runs locally by default and is not a publicly hosted service.
 - The prototype does not provide production-grade authentication, multi-user isolation, or financial-data security controls.
 
-## Hackathon Demo
+## 🎥 Clearflow Hackathon Demo
 
-**Demo video:** To be added after recording.
+Watch the working demonstration of Clearflow, developed for
+the PayPal AI Hackathon 2026.
 
-The demonstration will cover:
+[![Watch Clearflow Hackathon Demo](https://img.youtube.com/vi/TnzLOMaOFPA/maxresdefault.jpg)](https://youtu.be/TnzLOMaOFPA)
 
-- Business Home and Money Activity.
-- PayPal Sandbox integration.
-- AI Financial Advisor.
-- INR and USD scenario planning.
-- SQLite Save/Load functionality.
-- Cash-flow risk detection.
-- Postman payment verification tests.
+▶️ **[Watch the Full Demo on YouTube](https://youtu.be/TnzLOMaOFPA)**
 
+### What's demonstrated?
+
+- Financial dashboard and transaction management
+- PayPal Sandbox payment integration
+- AI Financial Advisor powered by Ollama
+- INR and USD cash-flow planning
+- Cash-reserve shortfall detection
+- SQLite scenario saving and loading
+- PayPal API verification using Postman
 ## Author
 
 **Jyothi Srinivasan**
