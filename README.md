@@ -150,7 +150,7 @@ These are scenario-based decision-support suggestions, not guaranteed financial 
 | Local AI model | Ollama — Qwen2.5 3B |
 | Financial calculations | Python, Decimal |
 | Interactive charts | Plotly |
-| API testing | Postman |
+| API testing and sponsor tool | Postman |
 | Environment configuration | Python-dotenv |
 | Version control | Git and GitHub |
 
@@ -315,35 +315,47 @@ These are hypothetical cash movements, not actual PayPal account balances or gua
 
 ## PayPal Sandbox API Testing with Postman
 
-Clearflow includes a Postman collection for reproducing API authentication and payment-verification tests.
+### Additional Hackathon Sponsor Integration — Postman
+
+**Postman was used as an additional sponsor tool during the PayPal AI Hackathon 2026** to develop, test, and validate Clearflow's PayPal Sandbox REST API integration.
+
+Rather than relying only on the Streamlit application's interface, I used Postman to independently verify PayPal API authentication, order retrieval, payment status, and captured transaction amounts.
+
+This helped confirm that Clearflow's payment records were based on responses from the PayPal Sandbox environment.
+
+### Postman Collection
 
 **Collection:** `Clearflow_Postman_Collection.json`
 
-### Included API Requests
+The collection is included in the public GitHub repository and can be imported into Postman.
+
+### API Requests
 
 | Request | Purpose |
 |---|---|
-| `01 - PayPal OAuth Access Token` | Authenticate using PayPal Sandbox OAuth 2.0 |
-| `02 - Retrieve PayPal Order` | Retrieve an existing Sandbox order and validate payment information |
+| `01 - PayPal OAuth Access Token` | Authenticate with PayPal Sandbox using OAuth 2.0 |
+| `02 - Retrieve PayPal Order` | Retrieve an existing Sandbox order and verify its payment information |
 
-### Automated Test Results
+The second request obtains a temporary OAuth access token through its pre-request script.
 
-Six automated order-verification tests passed during local testing.
+### Automated API Verification
 
-| Test | Result |
+I implemented and executed six automated payment-verification assertions in Postman.
+
+| Verification test | Result |
 |---|---|
 | Order retrieval returns HTTP 200 | Passed |
-| PayPal order is completed | Passed |
-| Payment capture is completed | Passed |
+| PayPal order status is COMPLETED | Passed |
+| Payment capture status is COMPLETED | Passed |
 | Payment amount is $1.00 USD | Passed |
-| Capture amount matches order amount | Passed |
+| Capture amount matches the order amount | Passed |
 | Gross amount minus PayPal fee equals net settlement | Passed |
 
-**Result: 6/6 tests passed.**
+**Final result: 6/6 tests passed during local testing.**
 
-### Example Sandbox Transaction
+### Verified PayPal Sandbox Transaction
 
-| Field | Value |
+| Field | Verified value |
 |---|---|
 | Order status | COMPLETED |
 | Capture status | COMPLETED |
@@ -351,25 +363,38 @@ Six automated order-verification tests passed during local testing.
 | PayPal fee | $0.54 USD |
 | Net settlement | $0.46 USD |
 
-These values were returned by the PayPal Sandbox API for the demonstrated transaction.
+These values were retrieved from the PayPal Sandbox API for the demonstrated test transaction.
 
-### Reproducing the Postman Tests
+### How to Reproduce the Postman Tests
 
 1. Install Postman.
-2. Import `Clearflow_Postman_Collection.json`.
-3. Create a PayPal Sandbox REST application through the PayPal Developer Dashboard.
+2. Import `Clearflow_Postman_Collection.json` from this repository.
+3. Create a PayPal Sandbox REST application using the PayPal Developer Dashboard.
 4. Open Postman Local Vault.
 5. Add `paypal_client_id` and `paypal_client_secret` using your own Sandbox credentials.
-6. Enable Vault access for trusted collection scripts when prompted.
-7. Run `01 - PayPal OAuth Access Token`.
-8. Run `02 - Retrieve PayPal Order`.
+6. Allow the collection's trusted scripts to access Vault secrets when prompted.
+7. Execute `01 - PayPal OAuth Access Token`.
+8. Execute `02 - Retrieve PayPal Order`.
 9. Review the automated assertions in the **Test Results** tab.
 
-The second request obtains a temporary OAuth access token through its pre-request script.
+**Important:** The example order belongs to a demonstration Sandbox merchant account. To reproduce the tests using another Sandbox merchant, replace the order ID with an order created under that account.
 
-**Note for judges:** The included order ID refers to a demonstration Sandbox payment. If using a different Sandbox merchant account, replace the order ID with one created under your own account. The automated assertions expect a completed $1.00 USD payment with a completed capture; use a matching test order or adjust the assertions accordingly.
+The automated assertions expect a completed $1.00 USD payment with a completed capture. Adjust the test data or assertions if using a different payment amount.
 
-These tests validate API behavior and payment-data consistency. They do not constitute a comprehensive application security assessment.
+### How Postman Contributed to Clearflow
+
+Postman supported the development process by helping me:
+
+- Validate PayPal Sandbox OAuth authentication.
+- Inspect REST API responses independently of Streamlit.
+- Verify completed order and capture information.
+- Check financial consistency between gross amounts, fees, and net settlements.
+- Create repeatable automated payment-verification tests.
+- Document the API integration for hackathon judges.
+
+**Postman provided API development and verification capabilities; PayPal Sandbox provided the actual test-payment environment.**
+
+The Postman tests validate selected API responses and payment-data consistency. They are not a comprehensive application security assessment.
 
 ## Security Practices
 
